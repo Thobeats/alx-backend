@@ -2,17 +2,7 @@
 """Simple Pagination Module"""
 import csv
 import math
-from typing import List
-
-
-def index_range(page: int, page_size: int) -> tuple:
-    """
-        A function that gets the first and the last
-        indices of a page.
-    """
-    first_index = (page - 1) * page_size
-    last_index = first_index + page_size
-    return (first_index, last_index)
+from typing import List, Tuple
 
 
 class Server:
@@ -33,10 +23,20 @@ class Server:
             self.__dataset = dataset[1:]
         return self.__dataset
 
+    @staticmethod
+    def index_range(page: int, page_size: int) -> Tuple[int, int]:
+        """
+            A function that gets the first and the last
+            indices of a page.
+        """
+        first_index = (page - 1) * page_size
+        last_index = first_index + page_size
+        return (first_index, last_index)
+
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         assert type(page) is int and type(page_size) is int
         assert page > 0 and page_size > 0
 
         # Read the CSV File and save it into a list of lists
-        start, end = index_range(page, page_size)
+        start, end = self.index_range(page, page_size)
         return self.dataset()[start:end]
