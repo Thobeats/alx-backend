@@ -35,7 +35,7 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Get Pages
-        
+
         Keyword arguments:
         page -- an integer: The starting page
         page_size -- an integer: The amount of records you want
