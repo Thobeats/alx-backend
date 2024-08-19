@@ -31,26 +31,12 @@ class Server:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
             self.__dataset = dataset[1:]
-
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        assert type(page) is int
-        assert type(page_size) is int
-        assert page > 0
-        assert page_size > 0
+        assert type(page) is int and type(page_size) is int
+        assert page > 0 and page_size > 0
 
         # Read the CSV File and save it into a list of lists
-        pages = list()
-        indexRange = index_range(page, page_size)
-
-        with open('popular_baby_names.csv', 'r', newline='') as babyNames:
-            name_reader = csv.reader(babyNames, delimiter=",", quotechar="|")
-            counter = 0
-            page_range = range(indexRange[0] + 1, indexRange[1] + 1)
-            for row in name_reader:
-                if counter in page_range:
-                    # name_reader_list = row.split(',')
-                    pages.append(row)
-                counter += 1
-        return pages
+        start, end = index_range(page, page_size)
+        return self.dataset()[start:end]
