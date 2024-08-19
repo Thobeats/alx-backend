@@ -34,6 +34,14 @@ class Server:
         return (first_index, last_index)
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Get Pages
+        
+        Keyword arguments:
+        page -- an integer: The starting page
+        page_size -- an integer: The amount of records you want
+        Return: List[List]
+        """
+
         assert type(page) is int and type(page_size) is int
         assert page > 0 and page_size > 0
 
