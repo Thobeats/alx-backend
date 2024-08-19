@@ -47,7 +47,7 @@ class Server:
         with open('popular_baby_names.csv', 'r', newline='') as babyNames:
             name_reader = csv.reader(babyNames, delimiter=",", quotechar="|")
             counter = 0
-            page_range = range(indexRange[0] + 1, indexRange[1] + 2)
+            page_range = range(indexRange[0] + 1, indexRange[1] + 1)
             for row in name_reader:
                 if counter in page_range:
                     # name_reader_list = row.split(',')
