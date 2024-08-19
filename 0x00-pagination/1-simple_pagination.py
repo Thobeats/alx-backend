@@ -49,8 +49,8 @@ class Server:
             counter = 0
             page_range = range(indexRange[0] + 1, indexRange[1] + 2)
             for row in name_reader:
-                counter += 1
                 if counter in page_range:
                     # name_reader_list = row.split(',')
                     pages.append(row)
+                counter += 1
         return pages
