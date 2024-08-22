@@ -25,13 +25,13 @@ class MRUCache(BaseCaching):
         Return: None
         """
         if key and item:
-            if len(self.cache_data) == self.MAX_ITEMS:
+            self.cache_data[key] = item
+            if len(self.cache_data) > self.MAX_ITEMS:
                 keys = sorted(self.cache_age.items(),
                               key=lambda kv: (kv[1], kv[0]))
                 del self.cache_age[keys[-1][0]]
                 del self.cache_data[keys[-1][0]]
-                print("DISCARD: {}".format(keys[0][0]))
-            self.cache_data[key] = item
+                print("DISCARD: {}".format(keys[-1][0]))
             if len(self.cache_age) > 0:
                 self.cache_age[key] = list(self.cache_age.values())[-1] + 1
             else:
