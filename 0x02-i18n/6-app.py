@@ -41,14 +41,15 @@ def get_locale() -> str:
     """
     Gets locale from request object
     """
-    locale = get_user(request.args.get('login_as', 0))
-    if locale and locale['locale'] in Config.LANGUAGES:
-        return locale['locale']
-    elif 'locale' in request.args:
+    if 'locale' in request.args:
         locale = request.args.get('locale', 0)
         return locale
     else:
-        return request.accept_languages.best_match(app.config['LANGUAGES'])
+        locale = get_user(request.args.get('login_as', 0))
+        if locale and locale['locale'] in Config.LANGUAGES:
+            return locale['locale']
+        else:
+            return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 def get_user(id) -> Union[Dict[str, Union[str, None]], None]:
