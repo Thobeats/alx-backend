@@ -9,7 +9,9 @@ from typing import (
 from flask import Flask
 from flask import g, request
 from flask import render_template
-from flask_babel import Babel
+from flask_babel import Babel, format_datetime
+import pytz
+import datetime
 
 
 class Config(object):
@@ -57,15 +59,19 @@ def get_timezone() -> str:
     """
     Gets timezone from request object
     """
+    current_timezone = app.config['BABEL_DEFAULT_TIMEZONE']
     if 'timezone' in request.args:
         timezone = request.args.get('timezone', 0)
-        return timezone
+        current_timezone = timezone
     else:
         timezone = get_user(request.args.get('login_as', 0))
         if timezone and timezone['timezone'] in Config.LANGUAGES:
-            return timezone['timezone']
-        else:
-            return app.config['BEST_DEFAULT_TIMEZONE']
+            current_timezone = timezone['timezone']
+
+    try:
+        return pytz.timezone(current_timezone).zone
+    except pytz.exceptions.UnknownTimeZoneError as e:
+        return app.config['BABEL_DEFAULT_TIMEZONE']
 
 
 def get_user(id) -> Union[Dict[str, Union[str, None]], None]:
@@ -83,8 +89,11 @@ def get_user(id) -> Union[Dict[str, Union[str, None]], None]:
 def before_request():
     """
     Adds valid user to the global session object `g`
+    Adds the current_time_zone the global session g
     """
     setattr(g, 'user', get_user(request.args.get('login_as', 0)))
+    setattr(g, 'current_time', format_datetime(datetime.datetime.now()))
+
 
 
 @app.route('/', strict_slashes=False)
@@ -92,8 +101,8 @@ def index() -> str:
     """
     Renders a basic html template
     """
-    return render_template('7-index.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5001, debug=True)
