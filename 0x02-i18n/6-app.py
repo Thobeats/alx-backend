@@ -41,7 +41,7 @@ def get_locale() -> str:
     """
     Gets locale from request object
     """
-    locale = users.get(int(request.args.get('login_as', 0)))
+    locale = get_user(request.args.get('login_as', 0))
     if locale and locale['locale'] in Config.LANGUAGES:
         return locale['locale']
     elif 'locale' in request.args:
@@ -79,4 +79,4 @@ def index() -> str:
 
 
 if __name__ == '__main__':
-    app.run(port=5001)
+    app.run(port=5000)
