@@ -1,5 +1,4 @@
 import { createClient, print } from "redis";
-import {promisify } from 'util'
 
 const client = createClient();
 
